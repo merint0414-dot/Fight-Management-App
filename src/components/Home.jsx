@@ -15,8 +15,7 @@ const Home = () => {
         <hr />
 
         <p>
-          Use the navigation bar to add a flight or
-          view available flights.
+          Use the navigation bar to add a flight or view available flights.
         </p>
 
       </div>

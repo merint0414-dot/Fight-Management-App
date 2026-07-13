@@ -12,12 +12,13 @@ function App() {
   return (
     <>
       <NavBar />
-
+     
       <Routes>
         <Route path="/" element={<AddFlight />} />
         <Route path="/add-flight" element={<AddFlight />} />
         <Route path="/flights" element={<ViewFlights />} />
       </Routes>
+    
     </>
   );
 }

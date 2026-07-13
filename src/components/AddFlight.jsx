@@ -16,6 +16,9 @@ const AddFlight = () => {
     status: "Scheduled",
   });
 
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
   const inputHandler = (e) => {
     setInput({
       ...input,
@@ -23,29 +26,49 @@ const AddFlight = () => {
     });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
-    axios
-      .post("https://host-demo-app.onrender.com/api/add-flight", {
-        flight_number: input.flight_number,
-        airline: input.airline,
-        origin: input.origin,
-        destination: input.destination,
-        departure_date: input.departure_date,
-        departure_time: input.departure_time,
-        arrival_time: input.arrival_time,
-        fare: Number(input.fare),
-        total_seats: Number(input.total_seats),
-        available_seats: Number(input.available_seats),
-        status: input.status,
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response?.data || error.message);
+    try {
+      const response = await axios.post(
+        "https://host-demo-app.onrender.com/api/add-flight",
+        {
+          flight_number: input.flight_number,
+          airline: input.airline,
+          origin: input.origin,
+          destination: input.destination,
+          departure_date: input.departure_date,
+          departure_time: input.departure_time,
+          arrival_time: input.arrival_time,
+          fare: Number(input.fare),
+          total_seats: Number(input.total_seats),
+          available_seats: Number(input.available_seats),
+          status: input.status,
+        }
+      );
+
+      setMessage(response.data.message || "Flight added successfully.");
+      setMessageType("success");
+
+      setInput({
+        flight_number: "",
+        airline: "",
+        origin: "",
+        destination: "",
+        departure_date: "",
+        departure_time: "",
+        arrival_time: "",
+        fare: "",
+        total_seats: "",
+        available_seats: "",
+        status: "Scheduled",
       });
+    } catch (error) {
+      setMessage(
+        error.response?.data?.message || "Something went wrong."
+      );
+      setMessageType("danger");
+    }
   };
 
   return (
@@ -58,140 +81,158 @@ const AddFlight = () => {
 
         <div className="card-body">
 
+          {message && (
+            <div className={`alert alert-${messageType}`}>
+              {message}
+            </div>
+          )}
+
           <form onSubmit={submitHandler}>
 
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <label>Flight Number</label>
+                <label className="form-label">Flight Number</label>
                 <input
                   type="text"
                   className="form-control"
                   name="flight_number"
                   value={input.flight_number}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Airline</label>
+                <label className="form-label">Airline</label>
                 <input
                   type="text"
                   className="form-control"
                   name="airline"
                   value={input.airline}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Origin</label>
+                <label className="form-label">Origin</label>
                 <input
                   type="text"
                   className="form-control"
                   name="origin"
                   value={input.origin}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Destination</label>
+                <label className="form-label">Destination</label>
                 <input
                   type="text"
                   className="form-control"
                   name="destination"
                   value={input.destination}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Departure Date</label>
+                <label className="form-label">Departure Date</label>
                 <input
                   type="date"
                   className="form-control"
                   name="departure_date"
                   value={input.departure_date}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Departure Time</label>
+                <label className="form-label">Departure Time</label>
                 <input
                   type="time"
                   className="form-control"
                   name="departure_time"
                   value={input.departure_time}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Arrival Time</label>
+                <label className="form-label">Arrival Time</label>
                 <input
                   type="time"
                   className="form-control"
                   name="arrival_time"
                   value={input.arrival_time}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Fare</label>
+                <label className="form-label">Fare (₹)</label>
                 <input
                   type="number"
                   className="form-control"
                   name="fare"
                   value={input.fare}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Total Seats</label>
+                <label className="form-label">Total Seats</label>
                 <input
                   type="number"
                   className="form-control"
                   name="total_seats"
                   value={input.total_seats}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
               <div className="col-md-6 mb-3">
-                <label>Available Seats</label>
+                <label className="form-label">Available Seats</label>
                 <input
                   type="number"
                   className="form-control"
                   name="available_seats"
                   value={input.available_seats}
                   onChange={inputHandler}
+                  required
                 />
               </div>
 
-              <div className="col-md-6 mb-3">
-                <label>Status</label>
+              <div className="col-md-6 mb-4">
+                <label className="form-label">Status</label>
                 <select
                   className="form-select"
                   name="status"
                   value={input.status}
                   onChange={inputHandler}
                 >
-                  <option>Scheduled</option>
-                  <option>On Time</option>
-                  <option>Delayed</option>
-                  <option>Cancelled</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="On Time">On Time</option>
+                  <option value="Delayed">Delayed</option>
+                  <option value="Cancelled">Cancelled</option>
                 </select>
               </div>
 
             </div>
 
-            <button type="submit" className="btn btn-primary">
-              Add Flight
-            </button>
+            <div className="d-grid">
+              <button type="submit" className="btn btn-primary">
+                Add Flight
+              </button>
+            </div>
 
           </form>
 

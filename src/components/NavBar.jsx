@@ -1,52 +1,66 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const NavBar = () => {
+const Navbar = () => {
+  const location = useLocation();
+
   return (
-    <div>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div className="container-fluid">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div className="container">
 
-          <Link className="navbar-brand" to="/">
-            Flight Management System
-          </Link>
+        <Link className="navbar-brand fw-bold" to="/">
+          Flight Management System
+        </Link>
 
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-          <div
-            className="collapse navbar-collapse"
-            id="navbarNavAltMarkup"
-          >
-            <div className="navbar-nav ms-auto">
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
 
-              <Link className="nav-link" to="/">
+            <li className="nav-item">
+              <Link
+                className={`nav-link ${
+                  location.pathname === "/" ? "active" : ""
+                }`}
+                to="/"
+              >
                 Home
               </Link>
+            </li>
 
-              <Link className="nav-link" to="/add-flight">
+            <li className="nav-item">
+              <Link
+                className={`nav-link ${
+                  location.pathname === "/add-flight" ? "active" : ""
+                }`}
+                to="/add-flight"
+              >
                 Add Flight
               </Link>
+            </li>
 
-              <Link className="nav-link" to="/flights">
+            <li className="nav-item">
+              <Link
+                className={`nav-link ${
+                  location.pathname === "/view-flights" ? "active" : ""
+                }`}
+                to="/view-flights"
+              >
                 View Flights
               </Link>
+            </li>
 
-            </div>
-          </div>
-
+          </ul>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 };
 
-export default NavBar;
+export default Navbar;
